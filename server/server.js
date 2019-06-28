@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 const path = require("path")
 
 // ... other app.use middleware 
-app.use(express.static( "client/build"))
+app.use(express.static( "../client/build"))
 
 // ...
 // Right before your app.listen(), add this:
@@ -28,7 +28,7 @@ require("./routes/api/userInit") (app)
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/galaxy")
 
 app.get("*", (req, res) => {
-  res.sendFile("client/build/index.html");
+  res.sendFile("../client/build/index.html");
 });
 
 app.listen(PORT, () => {
