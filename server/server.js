@@ -4,10 +4,11 @@ const app = express();
 const mongoose = require("mongoose")
 
 
+
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("build"));
+app.use(express.static("client/build"));
 
 
 // Define API routes here
