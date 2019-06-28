@@ -57,7 +57,7 @@ app.post("/api/account/signup", function (req, res, next) {
     )
 })
 
-app.post("/api/accout/signin", function (req, res, next) {
+app.post("/api/account/signin", function (req, res, next) {
     const { body } = req
     const { username, password} = body
 

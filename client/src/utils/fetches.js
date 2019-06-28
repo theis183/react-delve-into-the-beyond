@@ -11,7 +11,7 @@ export default {
   },
 
   userSignIn: function(state) {
-    return axios.post("/api/accout/signin", {
+    return axios.post("/api/account/signin", {
         username: state.username,
         password: state.password
     });
