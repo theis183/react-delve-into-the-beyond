@@ -5,13 +5,11 @@ const mongoose = require("mongoose")
 const path = require("path")
 
 // ... other app.use middleware 
-app.use(express.static(path.join(__dirname, "client", "build")))
+app.use(express.static(path.join(__dirname, "client/build")))
 
 // ...
 // Right before your app.listen(), add this:
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+
 
 
 
@@ -28,6 +26,10 @@ require("./routes/api/userInit") (app)
 // Define any API routes before this runs
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/galaxy")
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
