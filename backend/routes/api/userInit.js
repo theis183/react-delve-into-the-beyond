@@ -109,7 +109,8 @@ db.User.find({
         return res.send({
             success: true,
             message: "Valid sign in",
-            token: doc._id
+            token: doc._id,
+            userId: doc.userId
         })
     })
 })
@@ -168,5 +169,36 @@ app.put("/api/account/logout", function(req, res, next){
         }
     })
 })
+
+app.get("/api/account/user/:userId", function(req, res, next){
+    console.log("looking for user")
+    const userId = req.params.userId
+    db.User.find({
+        _id: userId,
+        isDeleted: false
+    }).populate('characters')
+    .exec((err, account) => {
+        if(err) {
+            return res.send({
+                success: false,
+                message: "Server error"
+            })
+        }
+        if (account.length != 1) {
+            return res.send({
+                success: false,
+                message: "Invalid"
+            })
+        }
+        else {
+            res.send({
+                success: true,
+                message: "Found Account",
+                account: account[0]
+            })
+        }
+    }) 
+})
+
 
 }

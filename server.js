@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Define API routes here
 require("./backend/routes/api/serverInit")(app)
-require("./backend/routes/api/playerInit")(app)
+require("./backend/routes/api/characterInit")(app)
 require("./backend/routes/api/userInit") (app)
 // Send every other request to the React app
 // Define any API routes before this runs

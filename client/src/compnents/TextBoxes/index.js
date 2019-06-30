@@ -60,3 +60,18 @@ export function ConfirmPassword(props){
 </div>
     )
 }
+
+export function CharacterName(props){
+    return(
+    <div>
+<label for="CharacterName">Character Name</label>
+<div className="input-group mb-3">
+    <input type="text" className="form-control"
+     id="CharacterName" aria-describedby="Character Name"
+     name="characterName"
+     {...props}>
+     </input>
+</div>
+</div>
+    )
+}

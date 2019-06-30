@@ -20,6 +20,21 @@ export default {
   verifyToken: function(token){
     return axios.get("/api/account/verify/" + token, {
     })
+  },
+
+  getUser: function(userId){
+    return axios.get("/api/account/user/" + userId)
+  },
+
+  createCharacter: function(state){
+    return axios.post("/api/createCharacter/",{
+      characterName: state.characterName,
+      userId: state.userId
+    } )
+  },
+
+  getCharacter: function(characterId){
+    return axios.get("/api/character/" + characterId)
   }
  
 }
