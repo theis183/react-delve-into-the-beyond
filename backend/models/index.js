@@ -5,12 +5,15 @@ module.exports = {
     Planet: require("./Planet"),
     Star: require("./Star"),
     Character: require("./Character"),
-    Ship: require('./Ship'),
+    ShipStatRef: require('./ShipStatRef'),
+    ShipInst: require('./ShipInst'),
     Artifact: require('./Artifact'),
     Station: require('./Station'),
     Market: require('./Market'),
     Item: require('./Item'),
     User: require('./User'),
-    UserSession: require('./UserSession')
+    UserSession: require('./UserSession'),
+    ShipComponent: require('./ShipComponents'),
+    Inventory: require('./Inventory')
   };
   

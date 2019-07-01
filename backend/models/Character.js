@@ -7,7 +7,7 @@ var CharacterSchema = new Schema({
     characterName: {type: String},
     currentSS: {type: Schema.Types.ObjectId, ref: "SolarSystem"},
     currentPlanet: {type: Schema.Types.ObjectId, ref: "Planet"},
-    ship: {type: Schema.Types.ObjectId, ref: "Ship"},
+    shipInst: {type: Schema.Types.ObjectId, ref: "ShipInst"},
     currency: {type: Number}
 })
 

@@ -4,25 +4,31 @@ const app = express();
 const mongoose = require("mongoose")
 const path = require("path")
 
+// ... other app.use middleware 
+app.use(express.static( "../client/build"))
+
+// ...
+// Right before your app.listen(), add this:
+
+
+
 
 // Define middleware here
-app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
 // Define API routes here
-require("./backend/routes/api/serverInit")(app)
-require("./backend/routes/api/characterInit")(app)
-require("./backend/routes/api/userInit") (app)
-require("./backend/routes/api/shipInit") (app)
+require("./routes/api/serverInit")(app)
+require("./routes/api/playerInit")(app)
+require("./routes/api/userInit") (app)
 // Send every other request to the React app
 // Define any API routes before this runs
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/galaxy")
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile("../client/build/index.html");
 });
 
 app.listen(PORT, () => {
