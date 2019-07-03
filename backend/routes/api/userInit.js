@@ -145,9 +145,8 @@ app.get("/api/account/verify/:token", function(req, res, next){
     })
 })
 
-app.put("/api/account/logout", function(req, res, next){
-    const {query} = req
-    const {token} = query
+app.put("/api/account/logout/:token", function(req, res, next){
+    const token = req.params.token
     db.UserSession.findOneAndUpdate({
         _id: token,
         isDeleted: false

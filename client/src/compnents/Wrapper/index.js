@@ -2,28 +2,17 @@ import React from "react"
 import './style.css'
 import Header from '../Header'
 import Footer from '../Footer'
+import {Container, ContainerFluid} from "../Container"
 
 function Wrapper(props){
     return(
-        <div className="container-fluid">
-            <div className="row">
-                <div className= "col align-self-start">
-                    <Header />
-                </div>
-            </div>
-            <div className="row">
-                <div className= "col">
+        <div id="wrapper">
+             <Header login={props.login} token={props.token}/>
+            <Container>
                 {props.children}
-                </div>    
-            </div>
-            <div className="row">
-                <div className= "col align-self-end">
-                    <Footer />
-                </div>
-            </div>
-        </div>
-    )
-
-}
+            </Container>
+                    <Footer />                 
+</div>
+    )}
 
 export default Wrapper

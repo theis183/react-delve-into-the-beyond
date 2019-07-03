@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import CreateCharacterButton from "../compnents/CreateCharacterButton"
 import { CharacterName } from "../compnents/TextBoxes"
 import { LoadGameButton } from "../compnents/Buttons"
+import Wrapper from "../compnents/Wrapper"
 
 class CharacterSelect extends Component {
     constructor(props) {
@@ -108,15 +109,20 @@ class CharacterSelect extends Component {
         }
 
         return (
-            <div>
-                <CharacterName onChange={this.handleInputChange} />
-                <CreateCharacterButton onClick={this.createCharacter} />
-                {this.state.characters.map((character) =>
-                    <div>{character.characterName}
-                        <LoadGameButton onClick={event => this.loadGame(event)} value={character._id} />
+            <Wrapper login="true" token={this.state.token}>
+                <div className="row">
+                    <div className="col-md-12">
+                        <CharacterName onChange={this.handleInputChange} />
+                        <CreateCharacterButton onClick={this.createCharacter} />
+                        {this.state.characters.map((character) =>
+                        <div>{character.characterName}
+                            <LoadGameButton onClick={event => this.loadGame(event)} value={character._id} />
+                                </div>
+                             )}
                     </div>
-                )}
-            </div>
+                </div>
+                
+            </Wrapper>
         )
     }
 }

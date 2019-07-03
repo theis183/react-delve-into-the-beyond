@@ -17,6 +17,10 @@ export default {
     });
   },
 
+  userLogout: function(token){
+    return axios.put("/api/account/logout/" + token)
+  },
+
   verifyToken: function(token){
     return axios.get("/api/account/verify/" + token, {
     })
@@ -35,6 +39,10 @@ export default {
 
   getCharacter: function(characterId){
     return axios.get("/api/character/" + characterId)
+  },
+
+  longRangeScan: function(scanRange, coord, distanceFromOrigin){
+    return axios.get("/api/longRangeScan/" + scanRange + "/" + distanceFromOrigin + "/" + coord[0] + "/" + coord[1] + "/" + coord[2])
   }
  
 }

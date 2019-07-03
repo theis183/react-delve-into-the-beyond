@@ -31,3 +31,12 @@ export function ShortRangeScanButton(props){
         </div>
         ) 
 }
+
+
+export function LogoutButton(props){
+    return(
+        <div>
+        <button type="button" className="btn btn-primary" {...props}>Logout</button>
+        </div>
+        ) 
+}

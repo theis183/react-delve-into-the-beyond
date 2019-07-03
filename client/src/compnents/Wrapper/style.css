@@ -1,4 +1,7 @@
 body {
     background-image: url("./stars.jpg")
+  }
+  
+#wrapper{
+    height: 100vh
 }
-

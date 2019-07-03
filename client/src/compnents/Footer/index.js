@@ -3,9 +3,9 @@ import './style.css'
 
 function Footer(props){
     return(
-        <div id="footer">
+        <footer className="footer mt-auto">
             <p>A game by Ian Theis</p>
-        </div>
+        </footer>
     )
 }
 

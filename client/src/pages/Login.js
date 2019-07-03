@@ -4,6 +4,7 @@ import { Username, Password } from "../compnents/TextBoxes"
 import SignInButton from "../compnents/SignInButton";
 import fetches from "../utils/fetches";
 import { Redirect } from 'react-router-dom'
+import Wrapper from "../compnents/Wrapper"
 
 
 
@@ -97,12 +98,16 @@ class Login extends Component {
 
         if (!token) {
             return (
-                <div>
-                    <Username onChange={this.handleInputChange} />
-                    <Password onChange={this.handleInputChange} />
-                    <SignInButton onClick={this.onSignIn} />
-                    <a href="/SignUp" >Sign Up</a>
-                </div>
+                <Wrapper login="false" token="">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Username onChange={this.handleInputChange} />
+                            <Password onChange={this.handleInputChange} />
+                    <       SignInButton onClick={this.onSignIn} />
+                            <a href="/SignUp" >Sign Up</a>
+                        </div>
+                    </div>  
+                </Wrapper>
             )
         }
         return (

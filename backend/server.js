@@ -22,6 +22,8 @@ app.use(express.json());
 require("./routes/api/serverInit")(app)
 require("./routes/api/playerInit")(app)
 require("./routes/api/userInit") (app)
+require('./routes/api/shipInit') (app)
+require('./routes/api/gameActions') (app)
 // Send every other request to the React app
 // Define any API routes before this runs
 

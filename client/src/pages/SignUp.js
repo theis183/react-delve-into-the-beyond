@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Username, Email, Password, ConfirmPassword } from "../compnents/TextBoxes"
 import SignUpButton from "../compnents/SignUpButton";
 import fetches from "../utils/fetches"
+import Wrapper from '../compnents/Wrapper'
 import { Redirect } from 'react-router-dom'
 
 class SignUp extends Component {
@@ -54,13 +55,17 @@ class SignUp extends Component {
 
 
         return (
-            <div>
-                <Username onChange={this.handleInputChange} />
-                <Email onChange={this.handleInputChange} />
-                <Password onChange={this.handleInputChange} />
-                <ConfirmPassword onChange={this.handleInputChange} />
-                <SignUpButton onClick={this.onSignUp} />
-            </div>
+            <Wrapper login="false" token="">
+                <div className="row">
+                    <div className="col-md-12">
+                        <Username onChange={this.handleInputChange} />
+                        <Email onChange={this.handleInputChange} />
+                        <Password onChange={this.handleInputChange} />
+                        <ConfirmPassword onChange={this.handleInputChange} />
+                        <SignUpButton onClick={this.onSignUp} />
+                    </div>
+                </div>
+            </Wrapper>
 
         )
     }

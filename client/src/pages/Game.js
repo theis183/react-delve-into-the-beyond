@@ -26,6 +26,7 @@ class Game extends Component {
             acceleration: '',
             scanRange: '',
             scanResolution: '',
+            longRangeScanResults: ''
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -44,7 +45,14 @@ class Game extends Component {
     }
 
     longRangeScan() {
-        console.log("function long range scan is being worked on")
+        fetches.longRangeScan(this.state.scanRange, this.state.solarSystemCoord, this.state.solarSystemDistanceFromOrigin)
+        .then(
+            solarSystems => {
+                this.setState({
+                    longRangeScanResults: solarSystems
+                })
+            }
+        )
     }
 
     midRangeScan() {
@@ -151,8 +159,7 @@ class Game extends Component {
         }
         //main game return
         return (
-            <Wrapper >
-                <Container>
+            <Wrapper login="true" token={this.state.token}>
                     <div className='row'>
                         <div className='col-md-6'>
                             <CharacterInformationSection
@@ -177,8 +184,11 @@ class Game extends Component {
                             </div>
                         </div>
                     </div>
-
-                </Container>
+                    <div className='row'>
+                        <div className='col-md-12'>
+                            {this.state.longRangeScanResults ? <h1>longRangeScan found systems</h1> :  <div></div>}
+                        </div>
+                    </div>
             </Wrapper>
         )
 
