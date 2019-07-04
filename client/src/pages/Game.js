@@ -6,6 +6,7 @@ import { LongRangeScanButton, MidRangeScanButton, ShortRangeScanButton } from '.
 import { CharacterInformationSection, SolarSystemInformationSection } from '../compnents/Sections'
 import Wrapper from '../compnents/Wrapper'
 import { Container } from '../compnents/Container'
+import {NearbySolarSystemsTable, NearbyPlanetsTable} from '../compnents/Tables'
 
 
 class Game extends Component {
@@ -21,18 +22,23 @@ class Game extends Component {
             solarSystem: '',
             solarSystemDistanceFromOrigin: '',
             solarSystemCoord: '',
+            solarSystemId: '',
             planet: '',
+            planetCoord: '',
             ship: '',
             acceleration: '',
             scanRange: '',
             scanResolution: '',
-            longRangeScanResults: ''
+            longRangeScanResults: '',
+            midRangeScanResults: ''
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
         this.longRangeScan = this.longRangeScan.bind(this)
         this.midRangeScan = this.midRangeScan.bind(this)
         this.shortRangeScan = this.shortRangeScan.bind(this)
+        this.warpTo = this.warpTo.bind(this)
+        this.travelTo = this.travelTo.bind(this)
 
 
     }
@@ -49,20 +55,34 @@ class Game extends Component {
         .then(
             solarSystems => {
                 this.setState({
-                    longRangeScanResults: solarSystems
+                    longRangeScanResults: solarSystems.data
                 })
+                console.log(solarSystems.data)
             }
         )
     }
 
     midRangeScan() {
-        console.log("function mid range scan is being worked on")
+        fetches.midRangeScan(this.state.solarSystemId)
+        .then( res => {
+            this.setState({
+            midRangeScanResults: res.data.solarSystem
+            })
+        })
     }
 
     shortRangeScan() {
-        console.log("function short range scan is being worked on")
+        fetches.shortRangeScan(this.state.solarSystemId, this.state.scanResolution)
+        .then()
     }
 
+    warpTo() {
+        console.log("function warp to is being worked on")
+    }
+
+    travelTo() {
+        console.log("function travelTo is being worked on")
+    }
 
 
     componentDidMount() {
@@ -91,9 +111,11 @@ class Game extends Component {
                                             characterCurrency: characterData.character.currency,
                                             characterName: characterData.character.characterName,
                                             solarSystem: characterData.character.currentSS,
-                                            planet: characterData.character.currentPlanet,
                                             solarSystemDistanceFromOrigin: characterData.character.currentSS.distanceFromOrigin,
                                             solarSystemCoord: characterData.character.currentSS.coord,
+                                            solarSystemId: characterData.character.currentSS._id,
+                                            planet: characterData.character.currentPlanet,
+                                            planetCoord: characterData.character.currentPlanet.coordLoc,
                                             ship: characterData.character.shipInst,
                                             acceleration: characterData.character.shipInst.acceleration,
                                             scanRange: characterData.character.shipInst.scanRange,
@@ -186,7 +208,24 @@ class Game extends Component {
                     </div>
                     <div className='row'>
                         <div className='col-md-12'>
-                            {this.state.longRangeScanResults ? <h1>longRangeScan found systems</h1> :  <div></div>}
+                            {this.state.longRangeScanResults ? 
+                                <NearbySolarSystemsTable warp={this.warpTo}>
+                                    {{
+                                        "scanResults":this.state.longRangeScanResults,
+                                        "currentSolarSystemCoord": this.state.solarSystemCoord}}
+                                </NearbySolarSystemsTable> 
+                                :  <div></div>}
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-12'>
+                            {this.state.midRangeScanResults ? 
+                                <NearbyPlanetsTable travel={this.travelTo}>
+                                    {{
+                                        "scanResults":this.state.midRangeScanResults,
+                                        "currentPlanet": this.state.planet}}
+                                </NearbyPlanetsTable> 
+                                :  <div></div>}
                         </div>
                     </div>
             </Wrapper>

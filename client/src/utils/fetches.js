@@ -43,7 +43,14 @@ export default {
 
   longRangeScan: function(scanRange, coord, distanceFromOrigin){
     return axios.get("/api/longRangeScan/" + scanRange + "/" + distanceFromOrigin + "/" + coord[0] + "/" + coord[1] + "/" + coord[2])
-  }
+  },
+
+  midRangeScan: function(solarSystemId){
+    return axios.get("/api/midRangeScan/" + solarSystemId)
+  },
  
+  shortRangeScan: function(planetId, scanResolution){
+    return axios.get("/api/shotRangeScan/" + planetId + "/" + scanResolution)
+  }
 }
 

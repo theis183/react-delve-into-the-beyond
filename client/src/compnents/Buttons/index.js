@@ -40,3 +40,19 @@ export function LogoutButton(props){
         </div>
         ) 
 }
+
+export function WarpToSolarSystem(props){
+    return(
+        <div>
+        <button type="button" className="btn btn-primary" {...props}>Warp</button>
+        </div>
+    )
+}
+
+export function TravelToPlanetButton(props){
+    return(
+        <div>
+        <button type="button" className="btn btn-primary" {...props}>Travel</button>
+        </div>
+    )
+}
