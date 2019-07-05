@@ -49,8 +49,31 @@ export default {
     return axios.get("/api/midRangeScan/" + solarSystemId)
   },
  
-  shortRangeScan: function(planetId, scanResolution){
-    return axios.get("/api/shotRangeScan/" + planetId + "/" + scanResolution)
+  shortRangeScan: function(planetId){
+    return axios.get("/api/shortRangeScan/" + planetId)
+  },
+
+  checkAction: function(characterId){
+    return axios.get("/api/checkAction/" + characterId)
+  },
+
+  queueAction: function(characterId, actionType, time, actionValue){
+    return axios.post("/api/queueAction",{
+      characterId: characterId,
+      actionType: actionType,
+      time: time,
+      actionValue: actionValue
+    } )
+  },
+
+  getActions: function(characterId){
+    return axios.get("/api/getActions/" + characterId)
+  },
+
+  changePlanet: function(planetId, characterId){
+    return axios.put("api/changePlanet/" + planetId +"/" + characterId )
   }
+
+
 }
 

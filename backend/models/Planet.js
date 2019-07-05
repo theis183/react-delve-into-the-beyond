@@ -16,7 +16,7 @@ var PlanetSchema = new Schema({
 })
 
 PlanetSchema.methods.setCoordLoc = function(){
-    this.coordLoc = Array.from({length: 3}, () =>Math.pow(Math.random() * 3 - 1.5, 5 ))
+    this.coordLoc = Array.from({length: 2}, () =>Math.pow(Math.random() * 3 - 1.5, 5 ))
     return this.coordLoc
 }
 

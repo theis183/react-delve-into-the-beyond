@@ -3,10 +3,11 @@ import { getFromStorage, setInStorage } from "../utils/storage"
 import fetches from "../utils/fetches";
 import { Redirect } from 'react-router-dom'
 import { LongRangeScanButton, MidRangeScanButton, ShortRangeScanButton } from '../compnents/Buttons'
-import { CharacterInformationSection, SolarSystemInformationSection } from '../compnents/Sections'
+import { CharacterInformationSection, SolarSystemInformationSection, PlanetSummarySection } from '../compnents/Sections'
 import Wrapper from '../compnents/Wrapper'
 import { Container } from '../compnents/Container'
 import {NearbySolarSystemsTable, NearbyPlanetsTable} from '../compnents/Tables'
+import Timer from "../compnents/Timer"
 
 
 class Game extends Component {
@@ -25,12 +26,19 @@ class Game extends Component {
             solarSystemId: '',
             planet: '',
             planetCoord: '',
+            planetId: '',
             ship: '',
             acceleration: '',
             scanRange: '',
             scanResolution: '',
             longRangeScanResults: '',
-            midRangeScanResults: ''
+            midRangeScanResults: '',
+            shortRangeScanResults: '',
+            action: '',
+            actionType: '',
+            actionCompletionTime: '',
+            actionValue: '',
+            
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -39,6 +47,8 @@ class Game extends Component {
         this.shortRangeScan = this.shortRangeScan.bind(this)
         this.warpTo = this.warpTo.bind(this)
         this.travelTo = this.travelTo.bind(this)
+        this.handleActionCompletion = this.handleActionCompletion.bind(this)
+        this.resolveTravelTo = this.resolveTravelTo.bind(this)
 
 
     }
@@ -72,18 +82,89 @@ class Game extends Component {
     }
 
     shortRangeScan() {
-        fetches.shortRangeScan(this.state.solarSystemId, this.state.scanResolution)
-        .then()
+        fetches.shortRangeScan(this.state.planetId)
+        .then(
+            res => {
+                console.log("here is the short scan res " + res)
+                this.setState({
+                shortRangeScanResults: res.data.planet
+                })
+            }
+        )
     }
 
     warpTo() {
         console.log("function warp to is being worked on")
     }
 
-    travelTo() {
-        console.log("function travelTo is being worked on")
+    travelTo(distance, planetId) {
+        const {acceleration, character} = this.state
+        const time = Math.sqrt(distance/acceleration) / 30
+        fetches.checkAction(character._id)
+        .then(res =>
+            {
+                if (res.data.success && !res.data.found){
+                    console.log("In the if success and not having any uncompleted actions")
+                    fetches.queueAction(character._id, "Travel", time, planetId)
+                    .then(
+                        () =>{
+                        console.log("Completed the queue of an action")
+                        fetches.getActions(character._id).then(
+                            actionRes => {
+                                const actionData = actionRes.data
+                                if(actionData.success && actionData.found){
+                                    this.setState({
+                                        action: actionData.action,
+                                        actionType: actionData.action.actionType,
+                                        actionCompletionTime: actionData.action.actionCompletionTime,
+                                        actionValue: actionData.action.actionValue
+                                    }) 
+                                }
+                            }
+                        )
+                        }
+                        
+                        
+                    )
+                }
+            })
     }
 
+    handleActionCompletion(){
+        const {actionType, actionValue} = this.state
+        if(actionType==="Travel"){
+            this.resolveTravelTo(actionValue)
+        }
+    }
+
+    resolveTravelTo(planetId){
+        fetches.changePlanet(planetId, this.state.character._id)
+        .then(res =>{
+            const data = res.data
+            if(data.success){
+                this.setState({
+                    action: '',
+                    actionType: '',
+                    actionCompletionTime: '',
+                    actionValue: '',
+                    midRangeScanResults: '',
+                    shortRangeScanResults: '',
+                 })
+                 fetches.getCharacter(this.state.character._id)
+                 .then(characterRes => {
+                    const characterData = characterRes.data
+                    if (characterData.success) {
+                        this.setState({
+                            planet: characterData.character.currentPlanet,
+                            planetCoord: characterData.character.currentPlanet.coordLoc,
+                            planetId: characterData.character.currentPlanet._id,
+                        })
+                    }
+                })
+            }
+        })
+    }
+                        
 
     componentDidMount() {
         const obj = getFromStorage("Delve_Into_Space")
@@ -116,12 +197,30 @@ class Game extends Component {
                                             solarSystemId: characterData.character.currentSS._id,
                                             planet: characterData.character.currentPlanet,
                                             planetCoord: characterData.character.currentPlanet.coordLoc,
+                                            planetId: characterData.character.currentPlanet._id,
                                             ship: characterData.character.shipInst,
                                             acceleration: characterData.character.shipInst.acceleration,
                                             scanRange: characterData.character.shipInst.scanRange,
                                             scanResolution: characterData.character.shipInst.scanResolution,
-                                            isLoading: false
                                         })
+                                       fetches.getActions(characterData.character._id)
+                                       .then(
+                                           actionRes => {
+                                               const actionData = actionRes.data
+                                               if(actionData.success && actionData.found){
+                                                    this.setState({
+                                                        action: actionData.action,
+                                                        actionType: actionData.action.actionType,
+                                                        actionCompletionTime: actionData.action.actionCompletionTime,
+                                                        actionValue: actionData.action.actionValue,
+                                                        isLoading: false
+                                                    }) 
+                                               }
+                                               else{ this.setState({
+                                                   isLoading: false
+                                               })} 
+                                           }
+                                       ) 
                                     }
                                     else {
                                         console.log("Could NOT find Character!")
@@ -226,6 +325,32 @@ class Game extends Component {
                                         "currentPlanet": this.state.planet}}
                                 </NearbyPlanetsTable> 
                                 :  <div></div>}
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-12'>
+                            {this.state.shortRangeScanResults ? 
+                                <PlanetSummarySection>
+                                    {{
+                                        "scanResults":this.state.shortRangeScanResults,
+                                        "scanResolution": this.state.scanResolution
+                                        }}
+                                </PlanetSummarySection> 
+                                :  <div></div>}
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-12'>
+                        <div>{this.state.actionCompletionTime}</div>
+                        <div>{this.state.actionType}</div>
+                        <div>{this.state.actionValue}</div>
+                        {this.state.action ? 
+                        <Timer seconds={(new Date(this.state.actionCompletionTime).getTime() - Date.now()) / 1000.0}
+                        handeler={this.handleActionCompletion}>
+                        </Timer> :
+                        <div></div>
+                        }
+                            
                         </div>
                     </div>
             </Wrapper>

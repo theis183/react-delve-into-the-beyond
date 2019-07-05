@@ -1,5 +1,6 @@
-import React from "react"
+import React, {Component} from "react"
 import './style.css'
+import {ArtifactsTable, StationsTable} from "../Tables"
 
 export function CharacterInformationSection(props){
     return(
@@ -33,3 +34,43 @@ export function SolarSystemInformationSection(props){
         </div>
     </div>
     )}
+
+    export class PlanetSummarySection extends Component {
+        constructor(props) {
+            super(props)
+    
+            this.state = {
+                planet: props.children.scanResults,
+                scanResolution: props.children.scanResolution
+             }
+    
+    
+    
+        }
+    
+    
+        render(){
+            const {planet, scanResolution} = this.state
+           return(
+           <div>
+            {planet.artifacts.length > 0 ? 
+            <ArtifactsTable>
+                {{
+                    artifacts: planet.artifacts,
+                    scanResolution: scanResolution
+                }}
+            </ArtifactsTable> :
+            <div>Scan did not Detect any Signs of an Artifact</div> }
+            {planet.stations.length > 0 ? 
+            <StationsTable>
+                {{
+                    stations: planet.stations
+                    
+                }}
+            </StationsTable> :
+            <div>Scan did not Detect any Signs of an Orbital Station</div> }
+            </div>
+           )
+        
+    }
+}

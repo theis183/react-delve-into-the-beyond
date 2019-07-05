@@ -54,10 +54,143 @@ module.exports = function (app) {
 
     })
 
-    app.get("/api/shortRangeScan/:planetId/:scanResolution", function (req, res) {
+    app.get("/api/shortRangeScan/:planetId", function (req, res) {
         db.Planet.find({
             _id:req.params.planetId
         }).populate('stations')
+        .populate('artifacts')
+        .exec((err, planet) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: "Server error"
+                })
+            }
+            if (planet.length != 1) {
+                return res.send({
+                    success: false,
+                    message: "Invalid"
+                })
+            }
+            else {
+                res.send({
+                    success: true,
+                    message: "Found Planet",
+                    planet: planet[0]
+                })
+            }
+        })
         
     })
+
+
+app.get("/api/checkAction/:characterId", function (req, res) {
+    db.Character.find({
+        _id:req.params.characterId
+    }).populate('actions')
+    .exec((err, character) => {
+        if (err) {
+            return res.send({
+                success: false,
+                message: "Server error"
+            })
+        }
+        if (character.length != 1) {
+            return res.send({
+                    success: false,
+                    message: "Invalid"
+                })
+            }
+        else {
+            const actions = character[0].actions
+            var found = false
+            actions.forEach(action => {
+                if (!action.completed){
+                    found = true
+                }
+            })
+            return res.send({
+                success: true,
+                found: found
+            })
+        }
+    })
+
+})
+
+app.post("/api/queueAction", function (req, res, next) {
+        const { body } = req
+        const { characterId, actionType, time, actionValue } = body
+        const newDate = Date.now() + (1000 * time)
+        db.Action.create({
+            actionType: actionType,
+            actionCompletionTime: newDate,
+            actionValue: actionValue
+        }).then( dbAction => {
+            return db.Character.findOneAndUpdate({ '_id': characterId }, { '$push': { actions: dbAction._id } }, { new: true })
+            .then(res.send("Success"))
+            
+        })
+ })
+
+ app.get("/api/getActions/:characterId", function (req, res) {
+    db.Character.find({
+        _id:req.params.characterId
+    }).populate('actions')
+    .exec((err, character) => {
+        if (err) {
+            return res.send({
+                success: false,
+                message: "Server error"
+            })
+        }
+        if (character.length != 1) {
+            return res.send({
+                    success: false,
+                    message: "Invalid"
+                })
+            }
+        else {
+            const actions = character[0].actions
+            var found = false
+            var inProgressAction = []
+            actions.forEach(action => {
+                if (!action.completed){
+                    found = true
+                    inProgressAction = action
+                }
+            })
+            return res.send({
+                success: true,
+                found: found,
+                action: inProgressAction
+            })
+        }
+    })
+
+})
+
+app.put("/api/changePlanet/:planetId/:characterId", function(req, res, next){
+    db.Character.findOneAndUpdate({
+        _id: req.params.characterId,
+    },
+    {
+        $set: {currentPlanet:req.params.planetId}
+    }, (err, planet) => {
+        if(err) {
+            return res.send({
+                success: false,
+                message: "Server error"
+            })
+        }
+        else {
+            res.send({
+                success: true,
+                message: "Changed Planets",
+                planet: planet
+            })
+        }
+    })
+})
+
 }

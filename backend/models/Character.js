@@ -8,7 +8,8 @@ var CharacterSchema = new Schema({
     currentSS: {type: Schema.Types.ObjectId, ref: "SolarSystem"},
     currentPlanet: {type: Schema.Types.ObjectId, ref: "Planet"},
     shipInst: {type: Schema.Types.ObjectId, ref: "ShipInst"},
-    currency: {type: Number}
+    currency: {type: Number},
+    actions: [{type: Schema.Types.ObjectId, ref: "Action"}]
 })
 
 CharacterSchema.methods.setCharacterName = function(characterName) {

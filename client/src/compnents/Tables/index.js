@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {NearbySolarSystemsRow, NearbyPlanetRow} from "../Row"
+import {NearbySolarSystemsRow, NearbyPlanetRow, ArtifactRow, StationRow} from "../Row"
 
 
 export class NearbySolarSystemsTable extends Component {
@@ -83,6 +83,89 @@ export class NearbyPlanetsTable extends Component {
       </thead>
       <tbody>
           {planetsMap}
+      </tbody>
+    </table>
+        )
+    }
+
+}
+
+export class ArtifactsTable extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            artifacts: props.children.artifacts,
+            scanResolution: props.children.scanResolution
+         }
+
+
+
+    }
+
+    render(){
+        var {artifacts, scanResolution} = this.state
+        var artifactsMap = artifacts.map(function(artifact){
+            if((Math.sqrt(Math.random()) * scanResolution) > artifact.signal){
+                return ( <ArtifactRow>
+                    {{
+                        "artifact": artifact,
+                    }}
+                </ArtifactRow>
+              )
+            }
+        }) 
+            
+        return(
+<table className="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">TechLevel</th>
+          <th scope="col">Retrieve</th>
+        </tr>
+      </thead>
+      <tbody>
+          {artifactsMap}
+      </tbody>
+    </table>
+        )
+        }
+
+}
+
+export class StationsTable extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            stations: props.children.stations,
+         }
+
+
+
+    }
+
+    render(){
+        var {stations} = this.state
+        var stationsMap = stations.map(function(station){
+            return <StationRow>
+                {{
+                    "station": station
+                }}
+            </StationRow>;
+          })
+        return(
+<table className="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Station Size</th>
+          <th scope="col">Manufactuaring Level</th>
+          <th scope="col">Research Level</th>
+          <th scope="col">Dock</th>
+        </tr>
+      </thead>
+      <tbody>
+          {stationsMap}
       </tbody>
     </table>
         )

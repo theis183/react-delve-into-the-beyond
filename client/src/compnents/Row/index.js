@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {distance} from "mathjs"
-import {WarpToSolarSystem, TravelToPlanetButton} from "../Buttons"
+import {WarpToSolarSystem, TravelToPlanetButton, RetrieveArtifactButton, DockButton} from "../Buttons"
 
 export class NearbySolarSystemsRow extends Component {
     constructor(props) {
@@ -47,7 +47,48 @@ export class NearbyPlanetRow extends Component {
               <td>{this.state.planet.distanceFromStar.toPrecision(5)}</td>
               <td>{distance(this.state.planet.coordLoc, this.state.currentPlanetCoordLoc).toPrecision(5)}</td>
               <td>{this.state.planet.planetType}</td>
-              <td><TravelToPlanetButton value={this.state.planet._id} onClick={travel}></TravelToPlanetButton></td>
+              <td><TravelToPlanetButton value={this.state.planet._id} onClick={() => travel(distance(this.state.planet.coordLoc, this.state.currentPlanetCoordLoc) * 149600000000, this.state.planet._id)}></TravelToPlanetButton></td>
+            </tr>
+          )}
+}
+
+export class ArtifactRow extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            artifact: props.children.artifact,
+         }
+         
+
+    }
+    render(){
+        return(
+            <tr>
+              <td>{this.state.artifact.techLevel}</td>
+              <td><RetrieveArtifactButton></RetrieveArtifactButton></td>
+            </tr>
+          )}
+}
+
+export class StationRow extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            station: props.children.station,
+         }
+         
+
+    }
+    render(){
+        const {station} = this.state
+        return(
+            <tr>
+              <td>{station.stationSize}</td>
+              <td>{station.manufacturingLvl}</td>
+              <td>{station.labLvl}</td>
+              <td><DockButton></DockButton></td>
             </tr>
           )}
 }

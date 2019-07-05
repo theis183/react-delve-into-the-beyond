@@ -56,3 +56,19 @@ export function TravelToPlanetButton(props){
         </div>
     )
 }
+
+export function RetrieveArtifactButton(props){
+    return(
+        <div>
+        <button type="button" className="btn btn-primary" {...props}>Retrieve</button>
+        </div>
+    )
+}
+
+export function DockButton(props){
+    return(
+        <div>
+        <button type="button" className="btn btn-primary" {...props}>Dock</button>
+        </div>
+    )
+}

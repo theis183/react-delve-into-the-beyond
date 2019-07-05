@@ -81,6 +81,7 @@ module.exports = function (app) {
         }).populate('currentSS')
             .populate('currentPlanet')
             .populate('shipInst')
+            .populate('actions')
             .exec((err, character) => {
                 if (err) {
                     return res.send({

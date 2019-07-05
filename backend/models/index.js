@@ -14,6 +14,7 @@ module.exports = {
     User: require('./User'),
     UserSession: require('./UserSession'),
     ShipComponent: require('./ShipComponents'),
-    Inventory: require('./Inventory')
+    Inventory: require('./Inventory'),
+    Action: require('./Action')
   };
   
