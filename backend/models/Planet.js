@@ -26,7 +26,7 @@ PlanetSchema.methods.setPlanetTemp = function(distanceFromStar, starTemp) {
 }
 
 PlanetSchema.methods.setDistanceFromStar = function(coordLoc){
-    this.distanceFromStar = Math.sqrt((Math.pow(coordLoc[0], 2) + Math.pow(coordLoc[1], 2) + Math.pow(coordLoc[2] , 2 ) ))
+    this.distanceFromStar = Math.sqrt((Math.pow(coordLoc[0], 2) + Math.pow(coordLoc[1], 2)))
     return this.distanceFromOrigin
 }
 

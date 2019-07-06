@@ -31,6 +31,7 @@ class Game extends Component {
             acceleration: '',
             scanRange: '',
             scanResolution: '',
+            wormHoleFactor: '',
             longRangeScanResults: '',
             midRangeScanResults: '',
             shortRangeScanResults: '',
@@ -49,6 +50,7 @@ class Game extends Component {
         this.travelTo = this.travelTo.bind(this)
         this.handleActionCompletion = this.handleActionCompletion.bind(this)
         this.resolveTravelTo = this.resolveTravelTo.bind(this)
+        this.resolveWarpTo = this.resolveWarpTo.bind(this)
 
 
     }
@@ -93,8 +95,43 @@ class Game extends Component {
         )
     }
 
-    warpTo() {
-        console.log("function warp to is being worked on")
+    warpTo(distance, solarSystemId) {
+        console.log("Here is the distance to be traveled in a warp " + distance )
+        const {character} = this.state
+        const acceleration = parseFloat(this.state.acceleration)
+        const wormHoleFactor = parseFloat(this.state.wormHoleFactor)
+        console.log("Here is the acceleration " + acceleration)
+        console.log("Here is the wormHole factor " + wormHoleFactor)
+        const time = Math.sqrt((distance/wormHoleFactor)/acceleration) / 30
+        console.log("Here is the time in seconds it should take to complete the warp " + time)
+        fetches.checkAction(character._id)
+        .then(res =>
+            {
+                if (res.data.success && !res.data.found){
+                    console.log("In the if success and not having any uncompleted actions")
+                    fetches.queueAction(character._id, "Warp", time, solarSystemId)
+                    .then(
+                        () =>{
+                        console.log("Completed the queue of an action")
+                        fetches.getActions(character._id).then(
+                            actionRes => {
+                                const actionData = actionRes.data
+                                if(actionData.success && actionData.found){
+                                    this.setState({
+                                        action: actionData.action,
+                                        actionType: actionData.action.actionType,
+                                        actionCompletionTime: actionData.action.actionCompletionTime,
+                                        actionValue: actionData.action.actionValue
+                                    }) 
+                                }
+                            }
+                        )
+                        }
+                        
+                        
+                    )
+                }
+            })
     }
 
     travelTo(distance, planetId) {
@@ -131,10 +168,25 @@ class Game extends Component {
     }
 
     handleActionCompletion(){
-        const {actionType, actionValue} = this.state
+        const {action, actionType, actionValue} = this.state
         if(actionType==="Travel"){
             this.resolveTravelTo(actionValue)
         }
+        else if(actionType === "Warp"){
+            this.resolveWarpTo(actionValue)
+        }
+        fetches.completeAction(action._id)
+        .then(res => {
+            const data = res.data
+            if(data.success){
+                this.setState({
+                    action: '',
+                    actionType: '',
+                    actionCompletionTime: '',
+                    actionValue: '',
+                })
+            }
+        })
     }
 
     resolveTravelTo(planetId){
@@ -143,10 +195,6 @@ class Game extends Component {
             const data = res.data
             if(data.success){
                 this.setState({
-                    action: '',
-                    actionType: '',
-                    actionCompletionTime: '',
-                    actionValue: '',
                     midRangeScanResults: '',
                     shortRangeScanResults: '',
                  })
@@ -159,6 +207,54 @@ class Game extends Component {
                             planetCoord: characterData.character.currentPlanet.coordLoc,
                             planetId: characterData.character.currentPlanet._id,
                         })
+                    }
+                })
+            }
+        })
+    }
+
+    resolveWarpTo(solarSystemId){
+        fetches.changeSolarSystem(solarSystemId, this.state.character._id)
+        .then(res =>{
+            const data = res.data
+            if(data.success){
+                this.setState({
+                    longRangeScanResults: '',
+                    midRangeScanResults: '',
+                    shortRangeScanResults: '',
+                 })
+                 fetches.getCharacter(this.state.character._id)
+                 .then(characterRes => {
+                    const characterData = characterRes.data
+                    if (characterData.success) {
+                        this.setState({
+                            solarSystem: characterData.character.currentSS,
+                            solarSystemDistanceFromOrigin: characterData.character.currentSS.distanceFromOrigin,
+                            solarSystemCoord: characterData.character.currentSS.coord,
+                            solarSystemId: characterData.character.currentSS._id,
+                        }, 
+                        () => {
+                            fetches.changePlanet(this.state.solarSystem.planets[0], this.state.character._id)
+                            .then(res =>{
+                                const data = res.data
+                                if(data.success){
+                                    fetches.getCharacter(this.state.character._id)
+                                    .then(characterRes => {
+                                        const characterData = characterRes.data
+                                        if (characterData.success) {
+                                            this.setState({
+                                                planet: characterData.character.currentPlanet,
+                                                planetCoord: characterData.character.currentPlanet.coordLoc,
+                                                planetId: characterData.character.currentPlanet._id,
+                                            })
+                                        }
+                                    })
+                                }
+                                
+                             })
+                        }
+                        )
+                            
                     }
                 })
             }
@@ -202,6 +298,7 @@ class Game extends Component {
                                             acceleration: characterData.character.shipInst.acceleration,
                                             scanRange: characterData.character.shipInst.scanRange,
                                             scanResolution: characterData.character.shipInst.scanResolution,
+                                            wormHoleFactor: characterData.character.shipInst.wormHoleFactor,
                                         })
                                        fetches.getActions(characterData.character._id)
                                        .then(

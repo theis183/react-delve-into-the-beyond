@@ -22,7 +22,10 @@ export class NearbySolarSystemsRow extends Component {
             <td>X:{this.state.solarSystem.coord[0].toPrecision(5)} Y:{this.state.solarSystem.coord[1].toPrecision(5)} Z:{this.state.solarSystem.coord[2].toPrecision(5)}</td>
             <td>{this.state.solarSystem.distanceFromOrigin.toPrecision(5)}</td>
             <td>{distance(this.state.solarSystem.coord, this.state.currentCoord).toPrecision(5)}</td>
-            <td><WarpToSolarSystem value={this.state.solarSystem._id} onClick={warp}></WarpToSolarSystem></td>
+            <td><WarpToSolarSystem value={this.state.solarSystem._id} 
+                onClick={() => warp(distance(this.state.solarSystem.coord, this.state.currentCoord) * 149600000000 * 63241, this.state.solarSystem._id)}>
+                </WarpToSolarSystem>
+            </td>
           </tr>
         )}
     
@@ -43,7 +46,7 @@ export class NearbyPlanetRow extends Component {
         var travel = this.props.travel
         return(
             <tr>
-              <td>X:{this.state.planet.coordLoc[0].toPrecision(5)} Y:{this.state.planet.coordLoc[1].toPrecision(5)} Z:{this.state.planet.coordLoc[2].toPrecision(5)}</td>
+              <td>X:{this.state.planet.coordLoc[0].toPrecision(5)} Y:{this.state.planet.coordLoc[1].toPrecision(5)})}</td>
               <td>{this.state.planet.distanceFromStar.toPrecision(5)}</td>
               <td>{distance(this.state.planet.coordLoc, this.state.currentPlanetCoordLoc).toPrecision(5)}</td>
               <td>{this.state.planet.planetType}</td>

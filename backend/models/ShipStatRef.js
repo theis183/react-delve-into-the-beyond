@@ -8,6 +8,7 @@ var ShipStatRefSchema = new Schema({
     role: {type: String},
     shipClass: {type: String},
     acceleration: {type: Number},
+    wormHoleFactor: {type: Number},
     cargoCapacity: {type: Number},
     fuelCapacity: {type: Number},
     warpFuelCapacity: {type: Number},

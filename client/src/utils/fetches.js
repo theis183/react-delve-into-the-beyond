@@ -72,6 +72,14 @@ export default {
 
   changePlanet: function(planetId, characterId){
     return axios.put("api/changePlanet/" + planetId +"/" + characterId )
+  },
+
+  changeSolarSystem: function(solarSystemId, characterId){
+    return axios.put("/api/changeSolarSystem/" + solarSystemId + "/" + characterId)
+  },
+
+  completeAction: function(actionId){
+    return axios.put("/api/completeAction/" + actionId)
   }
 
 

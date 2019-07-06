@@ -11,6 +11,7 @@ module.exports = function (app) {
                     role: "All Purpose",
                     shipClass: "Frigate",
                     acceleration: 500.0 + .5 * techLvl,
+                    wormHoleFactor: 10000 + 10 * techLvl,
                     cargoCapacity: 500.0 + .5 * techLvl,
                     fuelCapacity: 100.0,
                     scanRange: 2.0 + .01 * techLvl,
@@ -54,11 +55,13 @@ module.exports = function (app) {
            dbShipStaticRef => {
                console.log("Made it to the ship inst create with dbstaticRef: " + dbShipStaticRef)
                console.log("Ship Name: " + dbShipStaticRef[0].shipName)
+               console.log("Here is the ships stat ref to wormHoleFactor " + dbShipStaticRef[0].wormHoleFactor)
                db.ShipInst.create({
                 shipName: dbShipStaticRef[0].shipName,
                 role: dbShipStaticRef[0].role,
                 shipClass: dbShipStaticRef[0].shipClass,
                 acceleration: dbShipStaticRef[0].acceleration,
+                wormHoleFactor: dbShipStaticRef[0].wormHoleFactor,
                 cargoCapacity: dbShipStaticRef[0].cargoCapacity,
                 fuelCapacity: dbShipStaticRef[0].fuelCapacity,
                 scanRange: dbShipStaticRef[0].scanRange,
