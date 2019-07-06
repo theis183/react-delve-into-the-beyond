@@ -80,6 +80,10 @@ export default {
 
   completeAction: function(actionId){
     return axios.put("/api/completeAction/" + actionId)
+  },
+
+  getStar: function(starId){
+    return axios.get("/api/getStar/" + starId)
   }
 
 

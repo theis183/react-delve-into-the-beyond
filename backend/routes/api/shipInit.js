@@ -55,7 +55,6 @@ module.exports = function (app) {
            dbShipStaticRef => {
                console.log("Made it to the ship inst create with dbstaticRef: " + dbShipStaticRef)
                console.log("Ship Name: " + dbShipStaticRef[0].shipName)
-               console.log("Here is the ships stat ref to wormHoleFactor " + dbShipStaticRef[0].wormHoleFactor)
                db.ShipInst.create({
                 shipName: dbShipStaticRef[0].shipName,
                 role: dbShipStaticRef[0].role,
@@ -74,7 +73,12 @@ module.exports = function (app) {
                 manufacturyBonus: dbShipStaticRef[0].manufacturyBonus,
                 techLevel: dbShipStaticRef[0].techLevel
             }).then(dbShipInst =>{
-                   res.send(dbShipInst)
+                   db.Inventory.create({  
+                   }).then( dbInventory =>{
+                    return db.ShipInst.findOneAndUpdate({ '_id': dbShipInst._id }, { '$set': { inventory: dbInventory._id } }, { new: true })
+                   }
+                    
+                   )
                })
            } 
         )

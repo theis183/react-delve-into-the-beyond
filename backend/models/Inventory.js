@@ -4,8 +4,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var InventorySchema = new Schema({
-    volume: {type: Number},
-    items: []
+    items: [{type: Schema.Types.ObjectId, ref: "ItemInst"}]
 })
 
 var Inventory = mongoose.model("Inventory", InventorySchema)

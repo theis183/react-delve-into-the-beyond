@@ -40,6 +40,7 @@ function createShip(dbCharacter) {
                 role: dbShipStaticRef[0].role,
                 shipClass: dbShipStaticRef[0].shipClass,
                 acceleration: dbShipStaticRef[0].acceleration,
+                wormHoleFactor: dbShipStaticRef[0].wormHoleFactor,
                 cargoCapacity: dbShipStaticRef[0].cargoCapacity,
                 fuelCapacity: dbShipStaticRef[0].fuelCapacity,
                 scanRange: dbShipStaticRef[0].scanRange,
@@ -52,8 +53,55 @@ function createShip(dbCharacter) {
                 manufacturyBonus: dbShipStaticRef[0].manufacturyBonus,
                 techLevel: dbShipStaticRef[0].techLevel
             }).then(dbShipInst => {
+                createInventory(dbShipInst)
                 return db.Character.findOneAndUpdate({'_id': dbCharacter._id}, {'$set': {shipInst: dbShipInst._id}}, {new: true})
             })
+        }
+    )
+}
+
+function createInventory(dbShipInst) {
+    db.Inventory.create({})
+    .then( 
+        dbInventory =>
+        {
+            initItemFuel(dbInventory)
+            initItemWarpFuel(dbInventory)
+            return db.ShipInst.findOneAndUpdate({'_id': dbShipInst._id}, {'$set': {inventory: dbInventory._id}}, {new: true})
+        }
+    )
+}
+
+function initItemFuel(dbInventory){
+    db.ItemStatRef.find({
+        name: "fuel",
+        techLevel: 0
+    }).then(
+        dbItem => {
+            var item = new db.ItemInst
+            item.initItem(dbItem, 1000)
+            db.ItemInst.create(item)
+            .then(
+                dbItemInst =>{
+                    return db.Inventory.findOneAndUpdate({'_id': dbInventory._id}, {'$push': {items: dbItemInst._id}}, {new: true})
+                })
+        }
+    )
+}
+
+function initItemWarpFuel(dbInventory){
+    db.ItemStatRef.find({
+        name: "warpFuel",
+        techLevel: 0
+    }).then(
+        dbItem => {
+            var item = new db.ItemInst
+            item.initItem(dbItem, 1000)
+            db.ItemInst.create(item)
+            .then(
+                dbItemInst =>{
+                    return db.Inventory.findOneAndUpdate({'_id': dbInventory._id}, {'$push': {items: dbItemInst._id}}, {new: true})
+                })
         }
     )
 }

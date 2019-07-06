@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { getFromStorage, setInStorage } from "../utils/storage"
 import fetches from "../utils/fetches";
 import { Redirect } from 'react-router-dom'
-import { LongRangeScanButton, MidRangeScanButton, ShortRangeScanButton } from '../compnents/Buttons'
-import { CharacterInformationSection, SolarSystemInformationSection, PlanetSummarySection } from '../compnents/Sections'
+import { LongRangeScanButton, MidRangeScanButton, ShortRangeScanButton, MainOptionsButton } from '../compnents/Buttons'
+import { CharacterInformationSection, SolarSystemInformationSection, PlanetSummarySection, ShipInformationSection, PlanetInformationSection } from '../compnents/Sections'
 import Wrapper from '../compnents/Wrapper'
 import { Container } from '../compnents/Container'
 import {NearbySolarSystemsTable, NearbyPlanetsTable} from '../compnents/Tables'
@@ -39,6 +39,7 @@ class Game extends Component {
             actionType: '',
             actionCompletionTime: '',
             actionValue: '',
+            screenFocus: '',
             
         }
 
@@ -51,6 +52,7 @@ class Game extends Component {
         this.handleActionCompletion = this.handleActionCompletion.bind(this)
         this.resolveTravelTo = this.resolveTravelTo.bind(this)
         this.resolveWarpTo = this.resolveWarpTo.bind(this)
+        this.setScreenFocus = this.setScreenFocus.bind(this)
 
 
     }
@@ -260,6 +262,13 @@ class Game extends Component {
             }
         })
     }
+
+    setScreenFocus(value){
+        this.setState({
+            screenFocus: value
+        })
+        console.log("Screen set was called")
+    }
                         
 
     componentDidMount() {
@@ -378,25 +387,73 @@ class Game extends Component {
         //main game return
         return (
             <Wrapper login="true" token={this.state.token}>
-                    <div className='row'>
-                        <div className='col-md-6'>
-                            <CharacterInformationSection
-                                name={this.state.characterName}
-                                currency={this.state.characterCurrency} />
-                            <div className='col-md-6'>
-                                <SolarSystemInformationSection
-                                    distance={this.state.solarSystemDistanceFromOrigin}
-                                    coordx={this.state.solarSystemCoord[0]}
-                                    coordy={this.state.solarSystemCoord[1]}
-                                    coordz={this.state.solarSystemCoord[2]} />
-                                <div>acceleration: {this.state.acceleration}</div>
+                    <div className="row">
+                        <div div className="col-md-2">
+                            <div class="btn-group-vertical">
+                                <MainOptionsButton onClick={() => this.setScreenFocus("Character")}>Character</MainOptionsButton>
+                                <MainOptionsButton onClick={() => this.setScreenFocus("Ship")}>Ship</MainOptionsButton>
+                                <MainOptionsButton onClick={() => this.setScreenFocus("Inventory")}>Inventory</MainOptionsButton>
+                                <MainOptionsButton onClick={() => this.setScreenFocus("SolarSystem")}>Solar System</MainOptionsButton>
+                                <MainOptionsButton onClick={() => this.setScreenFocus("Planet")}>Planet</MainOptionsButton>
+                                
                             </div>
+                        </div>
+                            <div className= 'col-md-10'>
+
+                            {this.state.screenFocus==="Character" ?
+                            <CharacterInformationSection
+                            name={this.state.characterName}
+                            currency={this.state.characterCurrency} />
+                            :
+                            <div></div>
+                            }
+
+                            {this.state.screenFocus === "SolarSystem" ?
+                            <SolarSystemInformationSection>
+                            {{
+                                solarSystem: this.state.solarSystem
+                            }}
+                            </SolarSystemInformationSection>    
+                            : <div></div>}
+
+                            {this.state.screenFocus === "Ship" ?
+                            <ShipInformationSection>
+                                {{
+                                    ship: this.state.ship
+                                }}
+                            </ShipInformationSection>
+                            : <div></div>
+                            }
+
+                            {this.state.screenFocus === "Planet" ?
+                            <PlanetInformationSection>
+                                {{
+                                    planet: this.state.planet
+                                }}
+                            </PlanetInformationSection>
+                            : <div></div>
+                            }
+
+                            </div>
+                        </div>    
+                        <div className='row'>
+                        <div className='col-md-12'>
+                        <div>{this.state.actionCompletionTime}</div>
+                        <div>{this.state.actionType}</div>
+                        <div>{this.state.actionValue}</div>
+                        {this.state.action ? 
+                        <Timer seconds={(new Date(this.state.actionCompletionTime).getTime() - Date.now()) / 1000.0}
+                        handeler={this.handleActionCompletion}>
+                        </Timer> :
+                        <div></div>
+                        }
+                            
                         </div>
                     </div>
                     <div className='row'>
                         <div className='col-md-12'>
                             <div class="btn-group" role="group">
-                                <LongRangeScanButton onClick={this.longRangeScan} />
+                                <LongRangeScanButton onClick={this.longRangeScan} />  
                                 <MidRangeScanButton onClick={this.midRangeScan} />
                                 <ShortRangeScanButton onClick={this.shortRangeScan} />
                             </div>
@@ -436,20 +493,7 @@ class Game extends Component {
                                 :  <div></div>}
                         </div>
                     </div>
-                    <div className='row'>
-                        <div className='col-md-12'>
-                        <div>{this.state.actionCompletionTime}</div>
-                        <div>{this.state.actionType}</div>
-                        <div>{this.state.actionValue}</div>
-                        {this.state.action ? 
-                        <Timer seconds={(new Date(this.state.actionCompletionTime).getTime() - Date.now()) / 1000.0}
-                        handeler={this.handleActionCompletion}>
-                        </Timer> :
-                        <div></div>
-                        }
-                            
-                        </div>
-                    </div>
+                    
             </Wrapper>
         )
 

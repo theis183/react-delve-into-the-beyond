@@ -1,9 +1,10 @@
 import React from "react"
+import "./style.css"
 
 export function LoadGameButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-dark" {...props}>Load Game</button>
+        <button type="button" className="btn btn-primary" {...props}>Load Game</button>
         </div>
         ) 
 }
@@ -11,7 +12,7 @@ export function LoadGameButton(props){
 export function LongRangeScanButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-dark" {...props}>Long Range Scan</button>
+        <button type="button" className="btn btn-primary" {...props}>Long Range Scan</button>
         </div>
         ) 
 }
@@ -19,7 +20,7 @@ export function LongRangeScanButton(props){
 export function MidRangeScanButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-dark" {...props}>Mid Range Scan</button>
+        <button type="button" className="btn btn-info" {...props}>Mid Range Scan</button>
         </div>
         ) 
 }
@@ -27,7 +28,7 @@ export function MidRangeScanButton(props){
 export function ShortRangeScanButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-dark" {...props}>Short Range Scan</button>
+        <button type="button" className="btn btn-info" {...props}>Short Range Scan</button>
         </div>
         ) 
 }
@@ -36,7 +37,7 @@ export function ShortRangeScanButton(props){
 export function LogoutButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-primary" {...props}>Logout</button>
+        <button type="button" className="btn" {...props}>Logout</button>
         </div>
         ) 
 }
@@ -44,7 +45,7 @@ export function LogoutButton(props){
 export function WarpToSolarSystem(props){
     return(
         <div>
-        <button type="button" className="btn btn-primary" {...props}>Warp</button>
+        <button type="button" className="btn" {...props}>Warp</button>
         </div>
     )
 }
@@ -52,7 +53,7 @@ export function WarpToSolarSystem(props){
 export function TravelToPlanetButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-primary" {...props}>Travel</button>
+        <button type="button" className="btn" {...props}>Travel</button>
         </div>
     )
 }
@@ -60,7 +61,7 @@ export function TravelToPlanetButton(props){
 export function RetrieveArtifactButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-primary" {...props}>Retrieve</button>
+        <button type="button" className="btn" {...props}>Retrieve</button>
         </div>
     )
 }
@@ -68,7 +69,13 @@ export function RetrieveArtifactButton(props){
 export function DockButton(props){
     return(
         <div>
-        <button type="button" className="btn btn-primary" {...props}>Dock</button>
+        <button type="button" className="btn" {...props}>Dock</button>
         </div>
+    )
+}
+
+export function MainOptionsButton(props){
+    return(
+        <button type="button" className="btn btn-lg btn-dark btn-block" {...props}>{props.children}</button>        
     )
 }

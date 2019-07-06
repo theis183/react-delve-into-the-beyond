@@ -240,4 +240,32 @@ module.exports = function (app) {
             })
     })
 
+    app.get("/api/getStar/:starId", function (req, res) {
+        db.Star.find({
+            _id: req.params.starId
+        })
+            .exec((err, star) => {
+                if (err) {
+                    return res.send({
+                        success: false,
+                        message: "Server error"
+                    })
+                }
+                if (star.length != 1) {
+                    return res.send({
+                        success: false,
+                        message: "Invalid"
+                    })
+                }
+                else {
+                    const dbStar = star[0]
+                    return res.send({
+                        success: true,
+                        star: dbStar
+                    })
+                }
+            })
+
+    })
+
 }

@@ -17,6 +17,7 @@ require("./backend/routes/api/characterInit")(app)
 require("./backend/routes/api/userInit") (app)
 require("./backend/routes/api/shipInit") (app)
 require("./backend/routes/api/gameActions") (app)
+require("./backend/routes/api/itemInit") (app)
 // Send every other request to the React app
 // Define any API routes before this runs
 

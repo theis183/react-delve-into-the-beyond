@@ -1,9 +1,9 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var items = require('./referenceObjects/items.json')
 
-var ItemSchema = new Schema({
-    name: {type: Number},
+
+var ItemInstSchema = new Schema({
+    name: {type: String},
     techLvl: {type: Number},
     quantity: {type: Number},
     volume: {type: Number},
@@ -11,37 +11,37 @@ var ItemSchema = new Schema({
     property: {type: Object}
 })
 
-ItemSchema.methods.setName = function (itemName){
+ItemInstSchema.methods.setName = function (itemName){
     this.name = itemName
     return this.name
 }
 
-ItemSchema.methods.setTechLevel = function (itemTechLvl){
+ItemInstSchema.methods.setTechLevel = function (itemTechLvl){
     this.techLvl = itemTechLvl
     return this.techLvl
 }
 
-ItemSchema.methods.setVolume = function(itemVolume){
+ItemInstSchema.methods.setVolume = function(itemVolume){
     this.volume = itemVolume
     return this.itemVolume
 }
 
-ItemSchema.methods.setValue = function(itemValue){
+ItemInstSchema.methods.setValue = function(itemValue){
     this.value = itemValue
     return this.itemValue
 }
 
-ItemSchema.methods.setProperty = function(property){
+ItemInstSchema.methods.setProperty = function(property){
     this.property = property
     return this.property
 }
 
-ItemSchema.methods.setQuantity = function(quantity){
+ItemInstSchema.methods.setQuantity = function(quantity){
     this.quantity = quantity
     return this.quantity
 }
 
-ItemSchema.methods.initItem = function(item, quantity){
+ItemInstSchema.methods.initItem = function(item, quantity){
     this.setName(item.name)
     this.setTechLevel(item.techLvl)
     this.setVolume(item.volume)
@@ -50,7 +50,7 @@ ItemSchema.methods.initItem = function(item, quantity){
     this.setQuantity(quantity)
 }
 
-ItemSchema.methods.initRandomItem = function(stationSize){
+ItemInstSchema.methods.initRandomItem = function(stationSize){
     rand = Math.random()
     if (rand < .4){
         myItem = items.items.filter(
@@ -67,6 +67,6 @@ ItemSchema.methods.initRandomItem = function(stationSize){
     this.initItem(myItem, quantity)
 }
 
-var Item = mongoose.model("Item", ItemSchema)
+var ItemInst = mongoose.model("ItemInst", ItemInstSchema)
 
-module.exports = Item
+module.exports = ItemInst
