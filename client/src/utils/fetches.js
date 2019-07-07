@@ -84,6 +84,10 @@ export default {
 
   getStar: function(starId){
     return axios.get("/api/getStar/" + starId)
+  },
+
+  getInventory: function(inventoryId){
+    return axios.get("/api/getInventory/" + inventoryId)
   }
 
 

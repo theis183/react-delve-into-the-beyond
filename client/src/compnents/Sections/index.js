@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import './style.css'
-import {ArtifactsTable, StationsTable} from "../Tables"
+import {ArtifactsTable, StationsTable, InventoryTable} from "../Tables"
 import fetches from "../../utils/fetches";
 
 export function CharacterInformationSection(props){
@@ -97,6 +97,7 @@ export function CharacterInformationSection(props){
             )
             }    
     }
+
     export class PlanetInformationSection extends Component {
         constructor(props) {
             super(props)
@@ -135,6 +136,48 @@ export function CharacterInformationSection(props){
                     </div>
                 </div>                    
             </div>
+            )
+            }    
+    }
+
+    export class InventoryInformationSection extends Component {
+        constructor(props) {
+            super(props)
+    
+            this.state = {
+                ship: props.children.ship,
+                inventory: '',
+                isloading: true
+             }
+    
+    
+    
+        }
+        componentDidMount(){
+            fetches.getInventory(this.state.ship.inventory)
+            .then(res =>
+                {const data = res.data
+                    if (data.success){
+                        this.setState({
+                            inventory: data.inventory,
+                            isloading: false
+                        })
+                    }
+                    else{console.log("was not able to get inventory")}
+                
+                })
+        }
+        render(){            
+            if(this.state.isloading){
+                return(<div>Loading</div>)
+            }
+            const {inventory} = this.state
+            return(
+                <InventoryTable>
+                    {{
+                        inventory: inventory
+                    }}
+                </InventoryTable>
             )
             }    
     }

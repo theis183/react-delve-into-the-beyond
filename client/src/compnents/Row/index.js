@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {distance} from "mathjs"
-import {WarpToSolarSystem, TravelToPlanetButton, RetrieveArtifactButton, DockButton} from "../Buttons"
+import {WarpToSolarSystem, TravelToPlanetButton, RetrieveArtifactButton, DockButton, GenericButton} from "../Buttons"
 
 export class NearbySolarSystemsRow extends Component {
     constructor(props) {
@@ -92,6 +92,31 @@ export class StationRow extends Component {
               <td>{station.manufacturingLvl}</td>
               <td>{station.labLvl}</td>
               <td><DockButton></DockButton></td>
+            </tr>
+          )}
+}
+
+export class ItemRow extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            item: props.children.item,
+         }
+         
+
+    }
+    render(){
+        const {item} = this.state
+        return(
+            <tr>
+              <td>{item.name}</td>
+              <td>{item.techLvl}</td>
+              <td>{item.volume}</td>
+              <td>{item.value}</td>
+              <td>{JSON.stringify(item.property)}</td>
+              <td>{item.quantity}</td>
+              <td><GenericButton>Jettison</GenericButton></td>
             </tr>
           )}
 }

@@ -18,7 +18,7 @@ module.exports = function (app) {
 
         function warpFuel(techLvl) {
             return({
-                "name": "fuel",
+                "name": "warpFuel",
                 "volume": .1,
                 "value": 20 + 5 * techLvl,
                 "techLvl": techLvl,

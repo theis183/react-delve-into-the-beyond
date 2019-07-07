@@ -268,4 +268,37 @@ module.exports = function (app) {
 
     })
 
+    app.get("/api/getInventory/:inventoryId", function (req, res) {
+        db.Inventory.find({
+            _id: req.params.inventoryId
+        })
+        .populate("items")
+        .exec(
+            (err, inventory) => {
+                if (err) {
+                    return res.send({
+                        success: false,
+                        message: "Server error"
+                    })
+                }
+                if (inventory.length != 1) {
+                    return res.send({
+                        success: false,
+                        message: "Invalid"
+                    })
+                }
+                else {
+                    const dbInventory = inventory[0]
+                    console.log("Here is the inventory from the ba " + JSON.stringify(dbInventory))
+                    return res.send({
+                        success: true,
+                        inventory: dbInventory
+                    })
+                    
+                }
+            
+            }
+        )
+    })
+
 }

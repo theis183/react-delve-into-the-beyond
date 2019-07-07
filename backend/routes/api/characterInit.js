@@ -75,9 +75,10 @@ function createInventory(dbShipInst) {
 function initItemFuel(dbInventory){
     db.ItemStatRef.find({
         name: "fuel",
-        techLevel: 0
+        techLvl: 0
     }).then(
-        dbItem => {
+        dbItems => {
+            const dbItem = dbItems[0]
             var item = new db.ItemInst
             item.initItem(dbItem, 1000)
             db.ItemInst.create(item)
@@ -92,9 +93,11 @@ function initItemFuel(dbInventory){
 function initItemWarpFuel(dbInventory){
     db.ItemStatRef.find({
         name: "warpFuel",
-        techLevel: 0
+        techLvl: 0
     }).then(
-        dbItem => {
+        dbItems => {
+            console.log("Here is the stat ref for warp fuel " + JSON.stringify(dbItems))
+            const dbItem = dbItems[0]
             var item = new db.ItemInst
             item.initItem(dbItem, 1000)
             db.ItemInst.create(item)

@@ -79,3 +79,9 @@ export function MainOptionsButton(props){
         <button type="button" className="btn btn-lg btn-dark btn-block" {...props}>{props.children}</button>        
     )
 }
+
+export function GenericButton(props){
+    return(
+        <button type="button" className="btn btn-dark" {...props}>{props.children}</button>        
+    )
+}

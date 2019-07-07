@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {NearbySolarSystemsRow, NearbyPlanetRow, ArtifactRow, StationRow} from "../Row"
+import {NearbySolarSystemsRow, NearbyPlanetRow, ArtifactRow, StationRow, ItemRow} from "../Row"
 
 
 export class NearbySolarSystemsTable extends Component {
@@ -166,6 +166,49 @@ export class StationsTable extends Component {
       </thead>
       <tbody>
           {stationsMap}
+      </tbody>
+    </table>
+        )
+    }
+
+}
+
+export class InventoryTable extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            inventory: props.children.inventory,
+         }
+
+
+
+    }
+
+    render(){
+        var {inventory} = this.state
+        var inventoryMap = inventory.items.map(function(item){
+            return <ItemRow>
+                {{
+                    "item": item
+                }}
+            </ItemRow>;
+          })
+        return(
+<table className="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">TechLevel</th>
+          <th scope="col">Volume/Unit</th>
+          <th scope="col">Value/Unit</th>
+          <th scope="col">Properties</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Jetison</th>
+        </tr>
+      </thead>
+      <tbody>
+          {inventoryMap}
       </tbody>
     </table>
         )

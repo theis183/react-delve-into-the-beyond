@@ -3,7 +3,7 @@ import { getFromStorage, setInStorage } from "../utils/storage"
 import fetches from "../utils/fetches";
 import { Redirect } from 'react-router-dom'
 import { LongRangeScanButton, MidRangeScanButton, ShortRangeScanButton, MainOptionsButton } from '../compnents/Buttons'
-import { CharacterInformationSection, SolarSystemInformationSection, PlanetSummarySection, ShipInformationSection, PlanetInformationSection } from '../compnents/Sections'
+import { CharacterInformationSection, SolarSystemInformationSection, PlanetSummarySection, ShipInformationSection, PlanetInformationSection, InventoryInformationSection } from '../compnents/Sections'
 import Wrapper from '../compnents/Wrapper'
 import { Container } from '../compnents/Container'
 import {NearbySolarSystemsTable, NearbyPlanetsTable} from '../compnents/Tables'
@@ -404,6 +404,16 @@ class Game extends Component {
                             <CharacterInformationSection
                             name={this.state.characterName}
                             currency={this.state.characterCurrency} />
+                            :
+                            <div></div>
+                            }
+
+                             {this.state.screenFocus==="Inventory" ?
+                            <InventoryInformationSection>
+                                {{
+                                    ship: this.state.ship
+                                }}
+                            </InventoryInformationSection>
                             :
                             <div></div>
                             }
