@@ -88,8 +88,21 @@ export default {
 
   getInventory: function(inventoryId){
     return axios.get("/api/getInventory/" + inventoryId)
-  }
+  },
 
+  addItem: function(itemName, itemTechLevel, quantity, inventoryId){
+    return axios.post("/api/createItemInst",
+    {
+      name: itemName,
+      techLvl: itemTechLevel,
+      quantity: quantity,
+      inventoryId: inventoryId
+    })
+  },
+
+  deleteArtifact: function(artifactId){
+    return axios.delete("/api/deleteArtifact/" + artifactId)
+  }
 
 }
 

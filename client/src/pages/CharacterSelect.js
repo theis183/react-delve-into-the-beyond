@@ -6,6 +6,7 @@ import CreateCharacterButton from "../compnents/CreateCharacterButton"
 import { CharacterName } from "../compnents/TextBoxes"
 import { LoadGameButton } from "../compnents/Buttons"
 import Wrapper from "../compnents/Wrapper"
+import {CharacterSelectionTable} from "../compnents/Tables"
 
 class CharacterSelect extends Component {
     constructor(props) {
@@ -15,12 +16,12 @@ class CharacterSelect extends Component {
             token: '',
             userId: '',
             characterName: '',
-            characters: []
+            characters: '',
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
         this.createCharacter = this.createCharacter.bind(this)
-        this.loadGame = this.loadGame.bind(this)
+        this.load = this.load.bind(this)
     }
 
 
@@ -36,7 +37,7 @@ class CharacterSelect extends Component {
             .then(window.location.reload())
     }
 
-    loadGame(event) {
+    load(event) {
         const obj = getFromStorage("Delve_Into_Space")
         const { token, userId } = obj
         const characterId = event.target.value
@@ -67,7 +68,7 @@ class CharacterSelect extends Component {
                             .then(res2 => {
                                 const userData = res2.data
                                 const characters = userData.account.characters
-                                if (characters) {
+                                if (characters.length !== 0) {
                                     this.setState({
                                         characters: characters
                                     })
@@ -114,11 +115,13 @@ class CharacterSelect extends Component {
                     <div className="col-md-12">
                         <CharacterName onChange={this.handleInputChange} />
                         <CreateCharacterButton onClick={this.createCharacter} />
-                        {this.state.characters.map((character) =>
-                        <div>{character.characterName}
-                            <LoadGameButton onClick={event => this.loadGame(event)} value={character._id} />
-                                </div>
-                             )}
+                        { this.state.characters ?<CharacterSelectionTable load={this.load}>
+                            {{
+                                characters: this.state.characters
+                            }}
+                        </CharacterSelectionTable>
+                        : <div></div>}
+                        
                     </div>
                 </div>
                 

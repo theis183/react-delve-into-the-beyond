@@ -198,10 +198,11 @@ export function CharacterInformationSection(props){
     
         render(){
             const {planet, scanResolution} = this.state
+            var recover = this.props.recover
            return(
            <div>
             {planet.artifacts.length > 0 ? 
-            <ArtifactsTable>
+            <ArtifactsTable recover={recover}>
                 {{
                     artifacts: planet.artifacts,
                     scanResolution: scanResolution
@@ -268,7 +269,7 @@ export class ShipInformationSection extends Component {
         </div>
         <div className='row'>
             <div className='col-md-4'>
-                <p>Scan Range: {ship.scanRange} m/s</p>
+                <p>Scan Range: {ship.scanRange} LY</p>
             </div>
             <div className = 'col-md-4'>
                 <p>Scan Resolution: {ship.scanResolution}</p>

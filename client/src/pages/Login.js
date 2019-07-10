@@ -103,8 +103,10 @@ class Login extends Component {
                         <div className="col-md-12">
                             <Username onChange={this.handleInputChange} />
                             <Password onChange={this.handleInputChange} />
-                    <       SignInButton onClick={this.onSignIn} />
-                            <a href="/SignUp" >Sign Up</a>
+                            <SignInButton onClick={this.onSignIn} />
+                            <br/>
+                            <p>Don't have an Account?</p>
+                            <a href="/SignUp" >Sign Up Here</a>
                         </div>
                     </div>  
                 </Wrapper>

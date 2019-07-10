@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {NearbySolarSystemsRow, NearbyPlanetRow, ArtifactRow, StationRow, ItemRow} from "../Row"
+import {NearbySolarSystemsRow, NearbyPlanetRow, ArtifactRow, StationRow, ItemRow, CharacterSelectionRow} from "../Row"
 
 
 export class NearbySolarSystemsTable extends Component {
@@ -104,10 +104,11 @@ export class ArtifactsTable extends Component {
     }
 
     render(){
+        var recover = this.props.recover
         var {artifacts, scanResolution} = this.state
         var artifactsMap = artifacts.map(function(artifact){
             if((Math.sqrt(Math.random()) * scanResolution) > artifact.signal){
-                return ( <ArtifactRow>
+                return ( <ArtifactRow recover={recover}>
                     {{
                         "artifact": artifact,
                     }}
@@ -209,6 +210,48 @@ export class InventoryTable extends Component {
       </thead>
       <tbody>
           {inventoryMap}
+      </tbody>
+    </table>
+        )
+    }
+
+}
+
+export class CharacterSelectionTable extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            characters: props.children.characters,
+         }
+
+
+
+    }
+
+    render(){
+        var {characters} = this.state
+        var load = this.props.load
+        var characterMap = characters.map(function(character){
+            return <CharacterSelectionRow load={load}>
+                {{
+                    "character": character
+                }}
+            </CharacterSelectionRow>;
+          })
+        return(
+<table className="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Character Name</th>
+          <th scope="col">Currency</th>
+          <th scope="col">Ship</th>
+          <th scope="col">Distance From Origin</th>
+          <th scope="col">Load Game</th>
+        </tr>
+      </thead>
+      <tbody>
+          {characterMap}
       </tbody>
     </table>
         )

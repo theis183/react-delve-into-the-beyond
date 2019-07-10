@@ -3,7 +3,7 @@ import "./style.css"
 
 export function Container(props){
     return(
-        <div className='container'>
+        <div className='container' {...props}>
         {props.children}
         </div>
     )
@@ -11,7 +11,7 @@ export function Container(props){
 
 export function ContainerFluid(props){
     return(
-        <div className='container-fluid'>
+        <div className='container-fluid'{...props}>
         {props.children}
         </div>
     )

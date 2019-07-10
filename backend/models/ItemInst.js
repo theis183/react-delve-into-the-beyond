@@ -42,6 +42,7 @@ ItemInstSchema.methods.setQuantity = function(quantity){
 }
 
 ItemInstSchema.methods.initItem = function(item, quantity){
+    console.log("In the item inst init, here is the item" + item)
     this.setName(item.name)
     this.setTechLevel(item.techLvl)
     this.setVolume(item.volume)

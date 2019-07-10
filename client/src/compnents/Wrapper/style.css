@@ -5,3 +5,8 @@ body {
 #wrapper{
     height: 100vh
 }
+
+#mainBody{
+    margin-bottom:64px
+
+}

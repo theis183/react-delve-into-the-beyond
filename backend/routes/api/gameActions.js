@@ -300,5 +300,14 @@ module.exports = function (app) {
             }
         )
     })
+    
+    app.delete("/api/deleteArtifact/:artifactId", function (req, res) {
+        db.Artifact.findOneAndDelete({
+            _id:req.params.artifactId
+        }).then(
+            () =>{res.send("Deleted " + req.params.artifactId)}
+        )
+    })
+    
 
 }

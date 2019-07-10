@@ -8,7 +8,7 @@ function Wrapper(props){
     return(
         <div id="wrapper">
              <Header login={props.login} token={props.token}/>
-            <Container>
+            <Container id="mainBody">
                 {props.children}
             </Container>
                     <Footer />                 

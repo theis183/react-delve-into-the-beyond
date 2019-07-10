@@ -61,18 +61,20 @@ module.exports = function (app) {
 
     app.post("/api/createItemInst", function (req, res) {
         const {body} = req
-        const {itemName, techLevel, quantity, inventoryId} = body
+        const {name, techLvl, quantity, inventoryId} = body
+        console.log("Here is inventoryId" + inventoryId)
         db.ItemStatRef.find({
-            name: itemName,
-            techLevel: techLevel
+            name: name,
+            techLvl: techLvl
          }).then(
-           dbItemStaticRef => {
+           dbItemStaticRefs => {
+               const dbItemStaticRef = dbItemStaticRefs[0]
                var item = new db.ItemInst
                item.initItem(dbItemStaticRef, quantity)
-               db.ItemInst.create({
+               db.ItemInst.create(
                 item
-            }).then(dbItemInst =>{
-                return db.Inventory.findOneAndUpdate({ '_id': inventoryId }, { '$push': { item: dbItemInst._id } }, { new: true })
+            ).then(dbItemInst =>{
+                return db.Inventory.findOneAndUpdate({'_id': inventoryId}, {'$push': {items: dbItemInst._id}}, {new: true})
                }).then(res.send("Item Added"))
            } 
         )

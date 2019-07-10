@@ -4,7 +4,8 @@ class Timer extends Component {
     constructor(props) {
       super(props);
       this.state = { 
-          seconds: this.props.seconds }
+          seconds: this.props.seconds,
+        }
     }
 
     tick() {
@@ -26,9 +27,15 @@ class Timer extends Component {
     }
 
     render() {
+      const {seconds} = this.state
+      var displaySeconds = (seconds % 60).toString()
+      const displayMinutes = Math.floor(seconds / 60).toString()
+      if(seconds % 60 < 10){
+        displaySeconds = "0" + displaySeconds
+      }
       return (
         <div>
-          Time Until Completion: {this.state.seconds}
+          Time Until Completion: {displayMinutes + ":" + displaySeconds}
         </div>
       );
     }

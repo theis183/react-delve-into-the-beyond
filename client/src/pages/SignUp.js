@@ -63,6 +63,13 @@ class SignUp extends Component {
                         <Password onChange={this.handleInputChange} />
                         <ConfirmPassword onChange={this.handleInputChange} />
                         <SignUpButton onClick={this.onSignUp} />
+                        
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <p>Already have an Account?</p>
+                        <a href="/">Login Here</a>
                     </div>
                 </div>
             </Wrapper>

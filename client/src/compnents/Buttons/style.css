@@ -1,3 +1,9 @@
 .btn{
     background-color:#4E6485
 }
+
+#logoutBtn{
+    position: absolute;
+    top: 3px;
+    right: 3px;
+}

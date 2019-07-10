@@ -27,10 +27,14 @@ class Header extends Component {
 
 render(){
     return(
-        <div id="header">
-            <h2>Delve Into The Beyond</h2>
-            {this.state.login === "true" ? <LogoutButton onClick={this.logout}> </LogoutButton> : <div></div>}
-            {this.state.logout === "true" ? <Redirect to='/' /> : <div></div>}
+        <div id="header" className="container-fluid border-bottom border-dark">
+            <div className="row">
+              <div className="col-md-12">
+                <h2>Delve Into The Beyond</h2>
+                {this.state.login === "true" ? <LogoutButton onClick={this.logout}> </LogoutButton> : <div></div>}
+                {this.state.logout === "true" ? <Redirect to='/' /> : <div></div>}
+              </div>
+            </div>
         </div>
     )}
 }
